@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using OnlineShopWebApi;
@@ -8,11 +6,20 @@ using TestAPIWebApplication;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Начальное заполнение БД данными
+using (DatabaseContext databaseContext = new DatabaseContext())
+{
+    databaseContext.Database.EnsureDeleted();
+    databaseContext.Database.EnsureCreated();
+    GetSourceData.SetData();
+    var persons = GetSourceData.GetData();
+    databaseContext.AddRange(persons);
+    databaseContext.SaveChanges();
+}
+
 // Add services to the container.
 
-var configuration = builder.Configuration;
-string connection = configuration.GetConnectionString("TestApi");
-builder.Services.AddDbContext<DatabaseContext>(option => option.UseSqlServer(connection));
+builder.Services.AddTransient<DatabaseContext>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
