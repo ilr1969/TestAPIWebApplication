@@ -4,7 +4,7 @@ using TestAPIWebApplication;
 var builder = WebApplication.CreateBuilder(args);
 
 //Начальное заполнение БД данными
-/*using (DatabaseContext databaseContext = new DatabaseContext())
+using (DatabaseContext databaseContext = new DatabaseContext())
 {
     databaseContext.Database.EnsureDeleted();
     databaseContext.Database.EnsureCreated();
@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
     var persons = GetSourceData.GetData();
     databaseContext.AddRange(persons);
     databaseContext.SaveChanges();
-}*/
+}
 
 // Add services to the container.
 
